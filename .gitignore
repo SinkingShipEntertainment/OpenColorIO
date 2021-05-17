@@ -4,3 +4,7 @@ build*
 dist*
 mastercopy
 *.pyc
+
+# REZ
+_rez_build
+.vscode
