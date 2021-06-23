@@ -27,22 +27,27 @@ requires = [
 ]
 
 private_build_requires = [
-    "cmake",
-    "gcc",
 ]
 
 variants = [
-    ["platform-linux", "arch-x86_64", "os-centos-7", "python-2.7"],
-    ["platform-linux", "arch-x86_64", "os-centos-7", "python-3.7"],
+    ["platform-linux", "arch-x86_64", "os-centos-7"],
 ]
 
 uuid = "repository.OpenColorIO"
+
+# Pass CMake arguments to the REZ build system:
+# rez-build -i -- -DCMAKE_CXX_FLAGS=-w
+# rez-release -- -DCMAKE_CXX_FLAGS=-w
+
+def pre_build_commands():
+    command("source /opt/rh/devtoolset-6/enable")
 
 def commands():
     env.OCIO_LOCATION = "{root}"
     env.OCIO_ROOT = "{root}"
     env.OCIO_INCLUDE_DIR = "{root}/include"
     env.OCIO_LIBRARY_DIR = "{root}/lib"
-    env.LD_LIBRARY_PATH.prepend("{root}/lib")
     env.PATH.append("{root}/bin")
+    #env.LD_LIBRARY_PATH.prepend("{root}/lib")
 
+    command("source {root}/share/ocio/setup_ocio.sh")

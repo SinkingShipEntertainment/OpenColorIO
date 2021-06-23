@@ -14,14 +14,14 @@ endif()
 
 option(OCIO_BUILD_SHARED "Set to OFF to disable building the shared core library" ON)
 option(OCIO_BUILD_STATIC "Set to OFF to disable building the static core library" ON)
-option(OCIO_BUILD_TRUELIGHT "Set to OFF to disable truelight" ON)
-option(OCIO_BUILD_APPS "Set to OFF to disable command-line apps" ON)
-option(OCIO_BUILD_NUKE "Set to OFF to disable building nuke plugins" ON)
+option(OCIO_BUILD_TRUELIGHT "Set to OFF to disable truelight" OFF)
+option(OCIO_BUILD_APPS "Set to OFF to disable command-line apps" OFF)
+option(OCIO_BUILD_NUKE "Set to OFF to disable building nuke plugins" OFF)
 option(OCIO_BUILD_DOCS "Specify whether to build documentation" OFF)
 option(OCIO_BUILD_TESTS "Specify whether to build unittests" OFF)
-option(OCIO_BUILD_PYGLUE "Specify whether to build python bindings" ON)
+option(OCIO_BUILD_PYGLUE "Specify whether to build python bindings" OFF)
 option(OCIO_BUILD_JNIGLUE "Specify whether to build java bindings" OFF)
-option(OCIO_STATIC_JNIGLUE "Specify whether to statically link ocio to the java bindings" ON)
+option(OCIO_STATIC_JNIGLUE "Specify whether to statically link ocio to the java bindings" OFF)
 
 option(OCIO_USE_SSE "Specify whether to enable SSE CPU performance optimizations" ON)
 
@@ -182,7 +182,7 @@ else(USE_EXTERNAL_TINYXML)
         set(TINYXML_STATIC_LIBRARIES ${PROJECT_BINARY_DIR}/ext/dist/lib/libtinyxml.a)
     endif()
 endif(USE_EXTERNAL_TINYXML)
-    
+
 ###############################################################################
 ### YAML ###
 
@@ -234,10 +234,10 @@ set(EXTERNAL_INCLUDE_DIRS ${EXTERNAL_INCLUDE_DIRS} ${PROJECT_BINARY_DIR}/ext/dis
 set(EXTERNAL_COMPILE_FLAGS "-DTIXML_USE_STL")
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    
+
     execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
                     OUTPUT_VARIABLE GCC_VERSION)
-                    
+
     if (GCC_VERSION VERSION_LESS 4.2)
         message(STATUS "GCC Version < 4.2 - symbol visibility hiding disabled")
         set(EXTERNAL_COMPILE_FLAGS "${EXTERNAL_COMPILE_FLAGS} -fPIC")
@@ -316,14 +316,14 @@ endif()
 if(OCIO_BUILD_APPS)
     # Try to find OpenImageIO (OIIO) and OpenGL stuff
     OCIOFindOpenImageIO()
-    
+
     if(OIIO_FOUND)
         add_subdirectory(src/apps/ocioconvert)
         add_subdirectory(src/apps/ociolutimage)
     else()
         messageonce("Not building ocioconvert/ociolutimage. Requirement(s) found: OIIO:${OIIO_FOUND}")
     endif()
-    
+
     # ociodisplay, displays color-transformed images (uses OpenImageIO,
     # and OpenGL)
     OCIOFindOpenGL()
@@ -332,10 +332,10 @@ if(OCIO_BUILD_APPS)
     else()
         messageonce("Not building ociodisplay. Requirement(s) found, OpenGL:${OPENGL_FOUND}, GLUT:${GLUT_FOUND}, GLEW:${GLEW_FOUND}, OIIO:${OIIO_FOUND}")
     endif()
-    
+
     # ociocheck: verifies an OCIO config
     add_subdirectory(src/apps/ociocheck)
-    
+
     # ociobakelut writes out luts
     add_subdirectory(src/apps/ociobakelut)
 endif()
