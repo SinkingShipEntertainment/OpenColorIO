@@ -21,13 +21,12 @@ if(NOT BUILD_SHARED_LIBS)
     )
 endif()
 
-set_target_properties(ocioconvert PROPERTIES 
+set_target_properties(ocioconvert PROPERTIES
     COMPILE_FLAGS "${PLATFORM_COMPILE_FLAGS}")
 
 target_link_libraries(ocioconvert
     PRIVATE
         apputils
-        ${OCIO_HALF_LIB}
         ${OCIO_GL_LIB}
         oiiohelpers
         OpenColorIO

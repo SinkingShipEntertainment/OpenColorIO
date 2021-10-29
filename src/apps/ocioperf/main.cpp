@@ -12,7 +12,6 @@ namespace OIIO = OIIO_NAMESPACE;
 
 #include "apputils/argparse.h"
 #include "oiiohelpers.h"
-#include "utils/Half.h"
 #include "utils/StringUtils.h"
 
 
@@ -319,7 +318,7 @@ int main(int argc, const char **argv)
                 std::cout << std::endl;
                 std::cout << "OCIO Config. file:    '" << env << "'" << std::endl;
                 OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
-                std::cout << "OCIO Config. version: " << config->getMajorVersion() << "." 
+                std::cout << "OCIO Config. version: " << config->getMajorVersion() << "."
                                                       << config->getMinorVersion() << std::endl;
                 std::cout << "OCIO search_path:     " << config->getSearchPath() << std::endl;
             }
@@ -407,7 +406,7 @@ int main(int argc, const char **argv)
             }
 
             OCIO::ConfigRcPtr config  = OCIO::Config::CreateFromEnv()->createEditableCopy();
-            config->setProcessorCacheFlags(nocache ? OCIO::PROCESSOR_CACHE_OFF 
+            config->setProcessorCacheFlags(nocache ? OCIO::PROCESSOR_CACHE_OFF
                                                    : OCIO::PROCESSOR_CACHE_DEFAULT);
 
             {
@@ -417,7 +416,7 @@ int main(int argc, const char **argv)
                     if (nocache)
                     {
                         config = OCIO::Config::CreateFromEnv()->createEditableCopy();
-                        config->setProcessorCacheFlags(nocache ? OCIO::PROCESSOR_CACHE_OFF 
+                        config->setProcessorCacheFlags(nocache ? OCIO::PROCESSOR_CACHE_OFF
                                                                : OCIO::PROCESSOR_CACHE_DEFAULT);
                     }
 
@@ -434,7 +433,7 @@ int main(int argc, const char **argv)
                     if (nocache)
                     {
                         config = OCIO::Config::CreateFromEnv()->createEditableCopy();
-                        config->setProcessorCacheFlags(nocache ? OCIO::PROCESSOR_CACHE_OFF 
+                        config->setProcessorCacheFlags(nocache ? OCIO::PROCESSOR_CACHE_OFF
                                                                : OCIO::PROCESSOR_CACHE_DEFAULT);
                     }
 

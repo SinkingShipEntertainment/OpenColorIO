@@ -59,12 +59,18 @@ find_library ( OPENIMAGEIO_LIBRARY
                NAMES OpenImageIO${OIIO_LIBNAME_SUFFIX}
                HINTS ${OPENIMAGEIO_ROOT_DIR}
                PATH_SUFFIXES lib64 lib )
+find_library ( OPENIMAGEIO_UTIL_LIBRARY
+               NAMES OpenImageIO_Util${OIIO_LIBNAME_SUFFIX}
+               HINTS ${OPENIMAGEIO_ROOT_DIR}
+               PATH_SUFFIXES lib64 lib )
 find_path ( OPENIMAGEIO_INCLUDE_DIR
             NAMES OpenImageIO/imageio.h
-            HINTS ${OPENIMAGEIO_ROOT_DIR} )
+            HINTS ${OPENIMAGEIO_ROOT_DIR}
+            PATH_SUFFIXES include )
 find_program ( OIIOTOOL_BIN
                NAMES oiiotool
-               HINTS ${OPENIMAGEIO_ROOT_DIR} )
+               HINTS ${OPENIMAGEIO_ROOT_DIR}
+               PATH_SUFFIXES bin )
 
 # Try to figure out version number
 set (OIIO_VERSION_HEADER "${OPENIMAGEIO_INCLUDE_DIR}/OpenImageIO/oiioversion.h")
@@ -88,7 +94,7 @@ endif ()
 include (FindPackageHandleStandardArgs)
 find_package_handle_standard_args (OpenImageIO
     FOUND_VAR     OpenImageIO_FOUND
-    REQUIRED_VARS OPENIMAGEIO_INCLUDE_DIR OPENIMAGEIO_LIBRARY
+    REQUIRED_VARS OPENIMAGEIO_INCLUDE_DIR OPENIMAGEIO_LIBRARY OPENIMAGEIO_UTIL_LIBRARY
                   OPENIMAGEIO_VERSION
     VERSION_VAR   OPENIMAGEIO_VERSION
     )
@@ -96,7 +102,7 @@ set (OPENIMAGEIO_FOUND ${OpenImageIO_FOUND})  # Old name
 
 if (OpenImageIO_FOUND)
     set (OPENIMAGEIO_INCLUDES ${OPENIMAGEIO_INCLUDE_DIR})
-    set (OPENIMAGEIO_LIBRARIES ${OPENIMAGEIO_LIBRARY})
+    set (OPENIMAGEIO_LIBRARIES ${OPENIMAGEIO_LIBRARY} ${OPENIMAGEIO_UTIL_LIBRARY})
     get_filename_component (OPENIMAGEIO_LIBRARY_DIRS "${OPENIMAGEIO_LIBRARY}" DIRECTORY)
     if (NOT OpenImageIO_FIND_QUIETLY)
         message ( STATUS "OpenImageIO includes     = ${OPENIMAGEIO_INCLUDE_DIR}" )
@@ -111,7 +117,14 @@ if (OpenImageIO_FOUND)
             INTERFACE_INCLUDE_DIRECTORIES "${OPENIMAGEIO_INCLUDES}")
 
         set_property(TARGET OpenImageIO::OpenImageIO APPEND PROPERTY
-            IMPORTED_LOCATION "${OPENIMAGEIO_LIBRARIES}")
+            IMPORTED_LOCATION "${OPENIMAGEIO_LIBRARY}")
+    endif ()
+
+    if (NOT TARGET OpenImageIO::OpenImageIO_Util AND EXISTS "${OPENIMAGEIO_UTIL_LIBRARY}")
+        add_library(OpenImageIO::OpenImageIO_Util UNKNOWN IMPORTED)
+        set_target_properties(OpenImageIO::OpenImageIO_Util PROPERTIES
+            IMPORTED_LOCATION "${OPENIMAGEIO_UTIL_LIBRARY}")
+        target_link_libraries(OpenImageIO::OpenImageIO INTERFACE OpenImageIO::OpenImageIO_Util)
     endif ()
 
     if (NOT TARGET OpenImageIO::oiiotool AND EXISTS "${OIIOTOOL_BIN}")
@@ -124,4 +137,5 @@ endif ()
 mark_as_advanced (
     OPENIMAGEIO_INCLUDE_DIR
     OPENIMAGEIO_LIBRARY
+    OPENIMAGEIO_UTIL_LIBRARY
     )
