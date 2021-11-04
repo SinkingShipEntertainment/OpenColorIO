@@ -6,3 +6,7 @@ _install*
 dist*
 mastercopy
 *.pyc
+
+# SSE
+_rez_build/
+.vscode
