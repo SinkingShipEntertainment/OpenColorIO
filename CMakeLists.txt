@@ -27,7 +27,7 @@ endif()
 ###############################################################################
 # Project definition.
 
-project(OpenColorIO 
+project(OpenColorIO
     VERSION 2.1.1
     DESCRIPTION "OpenColorIO (OCIO) is a complete color management solution"
     HOMEPAGE_URL https://github.com/AcademySoftwareFoundation/OpenColorIO
@@ -56,7 +56,7 @@ include(GNUInstallDirs)
 # Forbid in-source build.
 
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-    message(FATAL_ERROR 
+    message(FATAL_ERROR
             "In-source build not allowed. Please make a new sub-directory and run cmake from there.")
 endif()
 
@@ -96,7 +96,7 @@ set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeR
 
 if(NOT "${CMAKE_BUILD_TYPE}" IN_LIST CMAKE_CONFIGURATION_TYPES)
     string(REPLACE ";" ", " _CMAKE_CONFIGURATION_TYPES_STR "${CMAKE_CONFIGURATION_TYPES}")
-    message(FATAL_ERROR 
+    message(FATAL_ERROR
             "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} is unsupported. Supported values are: ${_CMAKE_CONFIGURATION_TYPES_STR}.")
 endif()
 
@@ -110,6 +110,31 @@ endif()
 set(BUILD_TYPE_DEBUG ${_BUILD_TYPE_DEBUG})
 
 
+# -----------------------------------------------------------
+# REZ setup
+# -----------------------------------------------------------
+set(pybind11_ROOT $ENV{REZ_PYBIND11_ROOT})
+set(pystring_ROOT $ENV{REZ_PYSTRING_ROOT})
+set(yaml-cpp_ROOT $ENV{REZ_YAMLCPP_ROOT})
+set(GLEW_ROOT $ENV{REZ_GLEW_ROOT})
+set(Imath_ROOT $ENV{REZ_IMATH_ROOT})
+
+# If builing against OIIO (OCIO_BUILD_APPS ON)
+set(REZ_BUILD_OCIO_APPS OFF)
+
+if(${REZ_BUILD_OCIO_APPS})
+    set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ standard to compile against")
+    set(lcms2_ROOT $ENV{REZ_LCMS_ROOT})
+    set(OpenImageIO_ROOT $ENV{REZ_OIIO_ROOT})
+    set(Half_ROOT $ENV{OPENEXR_ROOT})
+    find_package(OpenEXR)
+    include_directories(
+        ${OPENEXR_INCLUDE_DIRS}
+    )
+endif()
+# -----------------------------------------------------------
+
+
 ###############################################################################
 # C++ version configuration
 
@@ -121,11 +146,11 @@ include(CppVersion)
 # Components to build
 
 option(BUILD_SHARED_LIBS "Set to OFF to build static libraries" ON)
-option(OCIO_BUILD_APPS "Set to OFF to disable command-line apps" ON)
+option(OCIO_BUILD_APPS "Set to OFF to disable command-line apps" ${REZ_BUILD_OCIO_APPS})
 option(OCIO_BUILD_OPENFX "Specify whether to build OpenFX plugins" OFF)
 option(OCIO_BUILD_NUKE "Specify whether to build nuke plugins" OFF)
-option(OCIO_BUILD_TESTS "Specify whether to build unittests" ON)
-option(OCIO_BUILD_GPU_TESTS "Specify whether to build gpu unittests" ON)
+option(OCIO_BUILD_TESTS "Specify whether to build unittests" OFF)
+option(OCIO_BUILD_GPU_TESTS "Specify whether to build gpu unittests" OFF)
 option(OCIO_USE_HEADLESS "Specify whether the GPU rendering is headless" OFF)
 
 option(OCIO_BUILD_FROZEN_DOCS "Specify whether to build frozen documentation, necessary when modifying the OCIO public API" OFF)
@@ -175,7 +200,7 @@ if(DEFINED OCIO_INSTALL_EXT_PACKAGES)
     # Case insensitive match
     string(TOUPPER "${OCIO_INSTALL_EXT_PACKAGES}" _OCIO_INSTALL_EXT_PACKAGES)
     if(NOT "${_OCIO_INSTALL_EXT_PACKAGES}" IN_LIST _EXT_OPTIONS)
-        message(FATAL_ERROR 
+        message(FATAL_ERROR
                 "OCIO_INSTALL_EXT_PACKAGES=${OCIO_INSTALL_EXT_PACKAGES} is unsupported. Supported values are: ${_EXT_OPTIONS_STR}.")
     endif()
 endif()
@@ -191,7 +216,7 @@ set_property(CACHE OCIO_INSTALL_EXT_PACKAGES PROPERTY STRINGS ${_EXT_OPTIONS})
 # Versioning
 
 if(NOT DEFINED SOVERSION)
-    set(SOVERSION "${OpenColorIO_VERSION_MAJOR}.${OpenColorIO_VERSION_MINOR}" CACHE STRING 
+    set(SOVERSION "${OpenColorIO_VERSION_MAJOR}.${OpenColorIO_VERSION_MINOR}" CACHE STRING
         "Set the SO version in the SO name of the output library")
     message(STATUS "Setting SOVERSION to '${SOVERSION}' as none was specified.")
 elseif(SOVERSION STREQUAL "")
@@ -203,12 +228,12 @@ endif()
 # Namespace
 
 if(NOT DEFINED OCIO_NAMESPACE)
-	set(OCIO_NAMESPACE "OpenColorIO_v${OpenColorIO_VERSION_MAJOR}_${OpenColorIO_VERSION_MINOR}${OpenColorIO_VERSION_RELEASE_TYPE}" CACHE STRING 
+	set(OCIO_NAMESPACE "OpenColorIO_v${OpenColorIO_VERSION_MAJOR}_${OpenColorIO_VERSION_MINOR}${OpenColorIO_VERSION_RELEASE_TYPE}" CACHE STRING
         "Specify the master OCIO C++ namespace: Options include OpenColorIO OpenColorIO_<YOURFACILITY> etc.")
 elseif(OCIO_NAMESPACE STREQUAL "")
     message(FATAL_ERROR "A namespace cannot be empty.")
 else()
-    set(OCIO_NAMESPACE "OpenColorIO_${OCIO_NAMESPACE}_v${OpenColorIO_VERSION_MAJOR}_${OpenColorIO_VERSION_MINOR}${OpenColorIO_VERSION_RELEASE_TYPE}" CACHE STRING 
+    set(OCIO_NAMESPACE "OpenColorIO_${OCIO_NAMESPACE}_v${OpenColorIO_VERSION_MAJOR}_${OpenColorIO_VERSION_MINOR}${OpenColorIO_VERSION_RELEASE_TYPE}" CACHE STRING
         "Specify the master OCIO C++ namespace: Options include OpenColorIO OpenColorIO_<YOURFACILITY> etc.")
     message(STATUS "Setting namespace to '${OCIO_NAMESPACE}' as none was specified.")
 endif()
@@ -228,12 +253,12 @@ set (OCIO_LIBNAME_SUFFIX "" CACHE STRING
 # Error checking
 
 if(OCIO_BUILD_SHARED AND OCIO_BUILD_STATIC)
-	message(FATAL_ERROR 
+	message(FATAL_ERROR
             "Deprecated options OCIO_BUILD_SHARED and OCIO_BUILD_STATIC cannot both be used at once")
 endif()
 
 if(OCIO_BUILD_SHARED)
-	message(DEPRECATION 
+	message(DEPRECATION
             "Option OCIO_BUILD_SHARED is deprecated. Please use the cmake standard BUILD_SHARED_LIBS=ON (default ON)")
 	if(NOT BUILD_SHARED_LIBS)
 		set(BUILD_SHARED_LIBS ON)
@@ -241,7 +266,7 @@ if(OCIO_BUILD_SHARED)
 endif()
 
 if(OCIO_BUILD_STATIC)
-	message(DEPRECATION 
+	message(DEPRECATION
             "Option OCIO_BUILD_STATIC is deprecated. Please use the cmake standard BUILD_SHARED_LIBS=OFF (default ON)")
 	if(BUILD_SHARED_LIBS)
 		set(BUILD_SHARED_LIBS OFF)
@@ -251,8 +276,8 @@ endif()
 
 ###############################################################################
 # Find or install external dependencies
-# Some required targets may be created by third-party CMake configs, which 
-# don't generally produce global targets. To guarantee all imported targets are 
+# Some required targets may be created by third-party CMake configs, which
+# don't generally produce global targets. To guarantee all imported targets are
 # global, this module is included at the project root level.
 
 include(FindExtPackages)
