@@ -96,9 +96,6 @@ variants = [
 
 uuid = "repository.OpenColorIO"
 
-# Pass CMake arguments to the REZ build system:
-# rez-build -i -- -DCMAKE_CXX_FLAGS=-w -DBoost_NO_BOOST_CMAKE=On -DBoost_NO_SYSTEM_PATHS=True
-# rez-release -- -DCMAKE_CXX_FLAGS=-w -DBoost_NO_BOOST_CMAKE=On -DBoost_NO_SYSTEM_PATHS=True
 
 def pre_build_commands():
     command("source /opt/rh/devtoolset-6/enable")
