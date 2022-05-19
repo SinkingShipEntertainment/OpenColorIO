@@ -120,7 +120,7 @@ set(GLEW_ROOT $ENV{REZ_GLEW_ROOT})
 set(Imath_ROOT $ENV{REZ_IMATH_ROOT})
 
 # If builing against OIIO (OCIO_BUILD_APPS ON)
-set(REZ_BUILD_OCIO_APPS OFF)
+set(REZ_BUILD_OCIO_APPS ON)
 
 if(${REZ_BUILD_OCIO_APPS})
     set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ standard to compile against")

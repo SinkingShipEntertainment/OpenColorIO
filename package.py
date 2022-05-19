@@ -36,8 +36,8 @@
 ################################################
 
 
-name = "ocio"
-# name = "ocio_tools"
+# name = "ocio"
+name = "ocio_tools"
 
 version = "2.1.1"
 
@@ -64,17 +64,6 @@ with scope("config") as c:
 
 # ---------------------------------------
 # For building ocio
-requires = [
-    "glew",
-    "libexpat",
-    "yamlcpp",
-    "pystring",
-    "pybind11",
-    "imath",
-]
-
-# ---------------------------------------
-# For building ocio_tools
 # requires = [
 #     "glew",
 #     "libexpat",
@@ -82,9 +71,20 @@ requires = [
 #     "pystring",
 #     "pybind11",
 #     "imath",
-#     "lcms",
-#     "oiio",
 # ]
+
+# ---------------------------------------
+# For building ocio_tools
+requires = [
+    "glew",
+    "libexpat",
+    "yamlcpp",
+    "pystring",
+    "pybind11",
+    "imath",
+    "lcms",
+    "oiio",
+]
 
 private_build_requires = [
 ]
