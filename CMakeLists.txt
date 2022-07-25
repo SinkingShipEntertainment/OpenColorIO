@@ -119,7 +119,7 @@ set(yaml-cpp_ROOT $ENV{REZ_YAMLCPP_ROOT})
 set(GLEW_ROOT $ENV{REZ_GLEW_ROOT})
 set(Imath_ROOT $ENV{REZ_IMATH_ROOT})
 
-# If builing against OIIO (OCIO_BUILD_APPS ON)
+# If building against OIIO (OCIO_BUILD_APPS ON)
 set(REZ_BUILD_OCIO_APPS OFF)
 
 if(${REZ_BUILD_OCIO_APPS})

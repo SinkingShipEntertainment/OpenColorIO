@@ -83,15 +83,16 @@ requires = [
 #     "pybind11",
 #     "imath",
 #     "lcms",
-#     "oiio",
+#     "oiio-2.3.15.0",
 # ]
 
 private_build_requires = [
 ]
 
 variants = [
-    ["platform-linux", "arch-x86_64", "os-centos-7", "python-2"],
-    ["platform-linux", "arch-x86_64", "os-centos-7", "python-3"],
+    ["platform-linux", "arch-x86_64", "os-centos-7", "python-2.7.5"],
+    ["platform-linux", "arch-x86_64", "os-centos-7", "python-3.7.7"],
+    ["platform-linux", "arch-x86_64", "os-centos-7", "python-3.9.7"],
 ]
 
 uuid = "repository.OpenColorIO"
