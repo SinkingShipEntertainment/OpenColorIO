@@ -107,3 +107,11 @@ def commands():
     env.OCIO_INCLUDE_DIR = "{root}/include"
     env.OCIO_LIBRARY_DIR = "{root}/lib"
     env.PATH.append("{root}/bin")
+
+    if resolve.python.version.major == 2:
+        env.PYTHONPATH.append("{root}/lib64/python2.7/site-packages")
+    elif resolve.python.version.major == 3:
+        if resolve.python.version.minor == 7:
+            env.PYTHONPATH.append("{root}/lib64/python3.7/site-packages")
+        elif resolve.python.version.minor == 9:
+            env.PYTHONPATH.append("{root}/lib64/python3.9/site-packages")
