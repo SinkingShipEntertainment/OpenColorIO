@@ -107,6 +107,7 @@ def commands():
     env.OCIO_INCLUDE_DIR = "{root}/include"
     env.OCIO_LIBRARY_DIR = "{root}/lib"
     env.PATH.append("{root}/bin")
+    env.LD_LIBRARY_PATH.prepend("{root}/lib64")
 
     if resolve.python.version.major == 2:
         env.PYTHONPATH.append("{root}/lib64/python2.7/site-packages")
