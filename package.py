@@ -57,8 +57,6 @@ with scope("config") as c:
 requires = [
     "glew",
     "libexpat",
-    "yamlcpp",
-    "pystring",
     "pybind11",
     "imath",
 ]
@@ -68,8 +66,6 @@ requires = [
 # requires = [
 #     "glew",
 #     "libexpat",
-#     "yamlcpp",
-#     "pystring",
 #     "pybind11",
 #     "imath",
 #     "lcms",
