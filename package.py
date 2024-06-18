@@ -32,7 +32,7 @@
 # There is a branch named rez-vX.X.X-tools which represents the full build.
 #
 # Once released, both will create different REZ packages at the release area.
-# One named "ocio_core" and the other "ocio".
+# One named "ocio" and the other "ocio_tools".
 ################################################
 ################################################
 
@@ -78,6 +78,7 @@ private_build_requires = [
 variants = [
     ["python-3.7"],
     ["python-3.9"],
+    ["python-3.11"],
 ]
 
 uuid = "repository.OpenColorIO"
@@ -115,3 +116,5 @@ def commands():
             env.PYTHONPATH.append("{root}/lib64/python3.7/site-packages")
         elif resolve.python.version.minor == 9:
             env.PYTHONPATH.append("{root}/lib64/python3.9/site-packages")
+        elif resolve.python.version.minor == 11:
+            env.PYTHONPATH.append("{root}/lib64/python3.11/site-packages")
