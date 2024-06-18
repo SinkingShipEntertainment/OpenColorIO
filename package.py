@@ -37,8 +37,8 @@
 ################################################
 
 
-name = "ocio"  # Change to OFF in CMakeLists.txt: option(OCIO_BUILD_APPS "Set to OFF to disable command-line apps"
-# name = "ocio_tools"  # Change to ON in CMakeLists.txt: option(OCIO_BUILD_APPS "Set to OFF to disable command-line apps"
+# name = "ocio"  # Change to OFF in CMakeLists.txt: option(OCIO_BUILD_APPS "Set to OFF to disable command-line apps"
+name = "ocio_tools"  # Change to ON in CMakeLists.txt: option(OCIO_BUILD_APPS "Set to OFF to disable command-line apps"
 
 version = "2.1.3"
 
@@ -54,23 +54,23 @@ with scope("config") as c:
 
 # ---------------------------------------
 # For building ocio
-requires = [
-    "glew",
-    "libexpat",
-    "pybind11",
-    "imath",
-]
-
-# ---------------------------------------
-# For building ocio_tools
 # requires = [
 #     "glew",
 #     "libexpat",
 #     "pybind11",
 #     "imath",
-#     "lcms",
-#     "oiio-2.3.15.0",
 # ]
+
+# ---------------------------------------
+# For building ocio_tools
+requires = [
+    "glew",
+    "libexpat",
+    "pybind11",
+    "imath",
+    "lcms",
+    "oiio-2.5.9.0", # used to be 2.3.15.0
+]
 
 private_build_requires = [
 ]
