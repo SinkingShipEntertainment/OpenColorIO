@@ -78,6 +78,8 @@ private_build_requires = [
 variants = [
     ["python-3.7"],
     ["python-3.9"],
+    ["python-3.10"],
+    ["python-3.11"],
 ]
 
 uuid = "repository.OpenColorIO"
@@ -115,3 +117,7 @@ def commands():
             env.PYTHONPATH.append("{root}/lib64/python3.7/site-packages")
         elif resolve.python.version.minor == 9:
             env.PYTHONPATH.append("{root}/lib64/python3.9/site-packages")
+        elif resolve.python.version.minor == 10:
+            env.PYTHONPATH.append("{root}/lib64/python3.10/site-packages")
+        elif resolve.python.version.minor == 11:
+            env.PYTHONPATH.append("{root}/lib64/python3.11/site-packages")
